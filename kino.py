@@ -13,12 +13,15 @@ Explore genre trends, top-rated movies, and what's hot right now — perfect for
 # Load data
 @st.cache_data
 def load_data():
-    return pd.read_csv("genres_expanded.csv")
+    df = pd.read_csv("genres_expanded.csv")
+    # ✅ Remove commas from year and convert to integer
+    df['year'] = df['year'].astype(str).str.replace(",", "").astype(int)
+    return df
 
 data = load_data()
 
 if st.checkbox('Show raw data'):
-    st.subheader('Raw data(First 100 Rows)')
+    st.subheader('Raw data (First 100 Rows)')
     st.write(data.head(100))
 
 # Sidebar filters
