@@ -18,7 +18,7 @@ def load_data():
 data = load_data()
 
 # ✅ Show raw data with limit for performance
-if st.checkbox("📄 Show Full Raw Data (First 100 Rows)"):
+if st.checkbox("📄 Show Raw Data (First 100 Rows)"):
     st.subheader("Raw Data Preview")
     st.dataframe(data.head(100))
 
