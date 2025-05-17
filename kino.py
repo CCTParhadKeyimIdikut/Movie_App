@@ -18,7 +18,7 @@ def load_data():
 data = load_data()
 
 if st.checkbox('Show raw data'):
-    st.subheader('Raw data')
+    st.subheader('Raw data(First 100 Rows)')
     st.write(data.head(100))
 
 # Sidebar filters
