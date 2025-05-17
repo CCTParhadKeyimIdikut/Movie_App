@@ -14,8 +14,6 @@ Explore genre trends, top-rated movies, and what's hot right now — perfect for
 @st.cache_data
 def load_data():
     df = pd.read_csv("genres_expanded.csv")
-    # ✅ Remove commas from year and convert to integer
-    df['year'] = df['year'].astype(str).str.replace(",", "").astype(int)
     return df
 
 data = load_data()
