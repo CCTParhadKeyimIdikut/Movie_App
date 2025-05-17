@@ -17,6 +17,10 @@ def load_data():
 
 data = load_data()
 
+if st.checkbox('Show raw data'):
+    st.subheader('Raw data')
+    st.write(data)
+
 # Sidebar filters
 st.sidebar.header("🔍 Filter Options")
 genres = sorted(data['genres'].unique())
