@@ -76,7 +76,3 @@ trending = (
 )
 
 st.bar_chart(trending.head(5))
-
-# Optional: raw data view
-with st.expander("🗂 Show Raw Filtered Data"):
-    st.dataframe(filtered)
