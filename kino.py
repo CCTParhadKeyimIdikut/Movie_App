@@ -17,9 +17,10 @@ def load_data():
 
 data = load_data()
 
-if st.checkbox('Show raw data'):
-    st.subheader('Raw data')
-    st.write(data)
+# ✅ Show all raw data if checkbox selected
+if st.checkbox("📄 Show Full Raw Data"):
+    st.subheader("Full Raw Data")
+    st.dataframe(data)  # Display full dataset
 
 # Sidebar filters
 st.sidebar.header("🔍 Filter Options")
