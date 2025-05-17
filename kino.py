@@ -3,9 +3,9 @@ import pandas as pd
 import numpy as np
 
 # Set page layout
-st.set_page_config(page_title="🎬 Movie Ratings Explorer", layout="wide")
+#st.set_page_config(page_title="🎬 Movie Ratings Explorer", layout="wide")
 
-st.title("🎥 Movie Trends for Young Adults (18–35)")
+st.title("🎥 Movie Ratings Explorer")
 st.markdown("""
 Explore genre trends, top-rated movies, and what's hot right now — perfect for understanding what young movie lovers enjoy.
 """)
