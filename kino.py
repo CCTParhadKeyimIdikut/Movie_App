@@ -19,7 +19,7 @@ data = load_data()
 
 if st.checkbox('Show raw data'):
     st.subheader('Raw data')
-    st.write(datahead(100))
+    st.write(data.head(100))
 
 # Sidebar filters
 st.sidebar.header("🔍 Filter Options")
