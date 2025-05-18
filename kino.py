@@ -3,6 +3,8 @@ import pandas as pd
 import numpy as np
 import altair as alt
 
+st.set_page_config(page_title="🎥 Movie Ratings Explorer", layout="centered")
+
 st.title("🎥 Movie Ratings Explorer")
 st.markdown("""
 Explore genre trends, top-rated movies, and what's hot right now — perfect for understanding what young movie lovers enjoy.
@@ -36,7 +38,7 @@ filtered = data[
     (data['year'] <= year_range[1])
 ]
 
-# Section 1: Line chart using st.line_chart
+# Section 1: Line chart using Altair
 st.subheader("📈 Average Movie Ratings Over Time by Genre")
 
 if selected_genres:
@@ -45,8 +47,16 @@ if selected_genres:
         .mean().reset_index()
     )
 
-    pivot = avg_ratings.pivot(index='year', columns='genres', values='rating').fillna(0)
-    st.line_chart(pivot)
+    line_chart = alt.Chart(avg_ratings).mark_line(point=True).encode(
+        x=alt.X('year:O', title='Year'),
+        y=alt.Y('rating:Q', title='Average Rating'),
+        color=alt.Color('genres:N', title='Genre', scale=alt.Scale(scheme='tableau10'))
+    ).properties(
+        width=700,
+        height=400
+    )
+
+    st.altair_chart(line_chart)
 else:
     st.warning("Please select at least one genre to see the trend.")
 
@@ -61,12 +71,12 @@ top_genres_df = (
     .sort_values(by='rating', ascending=False)
 )
 
-top_genres_chart = alt.Chart(top_genres_df).mark_bar(color='#e63946').encode(
-    x='rating',
-    y=alt.Y('genres', sort='-x'),
+top_genres_chart = alt.Chart(top_genres_df).mark_bar(color='#f39c12').encode(
+    x=alt.X('genres:N', sort='-y', title='Genre'),
+    y=alt.Y('rating:Q', title='Average Rating')
 ).properties(
-    width=600,
-    height=300,
+    width=700,
+    height=400,
     title='Top Rated Genres (All Time)'
 )
 
@@ -78,13 +88,12 @@ st.subheader("📊 Top 10 Most Frequent Genres")
 genre_counts = data['genres'].value_counts().reset_index().head(10)
 genre_counts.columns = ['genres', 'count']
 
-freq_genre_chart = alt.Chart(genre_counts).mark_bar(color='#9b59b6').encode(
-    x='count',
-    y=alt.Y('genres', sort='-x')
+freq_genre_chart = alt.Chart(genre_counts).mark_bar(color='#8e44ad').encode(
+    x=alt.X('count:Q', title='Count'),
+    y=alt.Y('genres:N', sort='-x', title='Genre')
 ).properties(
-    width=600,
-    height=300,
-    title='Top 10 Most Frequent Genres'
+    width=700,
+    height=400
 )
 
 st.altair_chart(freq_genre_chart)
@@ -94,16 +103,16 @@ st.subheader("🎬 Top Rated Movies (All Time)")
 
 top_movies = (
     data[['title', 'rating']].drop_duplicates()
-    .sort_values(by='rating', ascending=False).head(10)
+    .sort_values(by='rating', ascending=False)
+    .head(10)
 )
 
-top_movies_chart = alt.Chart(top_movies).mark_bar(color='#2ecc71').encode(
-    x='rating',
-    y=alt.Y('title', sort='-x')
+top_movies_chart = alt.Chart(top_movies).mark_bar(color='#27ae60').encode(
+    x=alt.X('rating:Q', title='Rating'),
+    y=alt.Y('title:N', sort='-x', title='Movie Title')
 ).properties(
-    width=600,
-    height=400,
-    title='Top Rated Movies (All Time)'
+    width=700,
+    height=400
 )
 
 st.altair_chart(top_movies_chart)
@@ -114,13 +123,12 @@ st.subheader("📺 Top 10 Most Frequent Movies by Title")
 movie_counts = filtered['title'].value_counts().reset_index().head(10)
 movie_counts.columns = ['title', 'count']
 
-freq_movies_chart = alt.Chart(movie_counts).mark_bar(color='#f39c12').encode(
-    x='count',
-    y=alt.Y('title', sort='-x')
+freq_movies_chart = alt.Chart(movie_counts).mark_bar(color='#6c5ce7').encode(
+    x=alt.X('count:Q', title='Count'),
+    y=alt.Y('title:N', sort='-x', title='Movie Title')
 ).properties(
-    width=600,
-    height=400,
-    title='Top 10 Most Frequent Movies by Title'
+    width=700,
+    height=400
 )
 
 st.altair_chart(freq_movies_chart)
