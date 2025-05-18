@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 
 st.title("🎥 Movie Ratings Explorer")
 st.markdown("""
@@ -59,23 +58,15 @@ top_genres = (
     .sort_values(ascending=False)
 )
 
-fig1, ax1 = plt.subplots()
-top_genres.plot(kind='bar', color='green', ax=ax1)
-ax1.set_ylabel("Average Rating")
-ax1.set_title("Top Rated Genres")
-st.pyplot(fig1)
+st.bar_chart(top_genres)
 
 # Section 3: Top 10 Most Frequent Genres
 st.subheader("📊 Top 10 Most Frequent Genres")
 
 genre_counts = data['genres'].value_counts().head(10)
+genre_df = pd.DataFrame({'Genre': genre_counts.index, 'Count': genre_counts.values}).set_index('Genre')
 
-fig2, ax2 = plt.subplots()
-genre_counts.plot(kind='barh', color='purple', ax=ax2)
-ax2.set_xlabel("Count")
-ax2.set_ylabel("Genre")
-ax2.set_title("Top 10 Most Frequent Genres")
-st.pyplot(fig2)
+st.bar_chart(genre_df)
 
 # Section 4: Top Rated Movies (All Time)
 st.subheader("🎬 Top Rated Movies (All Time)")
@@ -85,22 +76,12 @@ top_movies = (
     .sort_values(by='rating', ascending=False).head(10)
 ).set_index('title')
 
-fig3, ax3 = plt.subplots()
-top_movies.plot(kind='barh', color='orange', ax=ax3, legend=False)
-ax3.set_xlabel("Rating")
-ax3.set_title("Top Rated Movies (All Time)")
-ax3.invert_yaxis()
-st.pyplot(fig3)
+st.bar_chart(top_movies)
 
 # Section 5: Top 10 Most Frequent Movie Titles
 st.subheader("📺 Top 10 Most Frequent Movies by Title")
 
 movie_counts = filtered['title'].value_counts().head(10)
+movie_df = pd.DataFrame({'Title': movie_counts.index, 'Count': movie_counts.values}).set_index('Title')
 
-fig4, ax4 = plt.subplots()
-movie_counts.plot(kind='barh', color='red', ax=ax4)
-ax4.set_xlabel("Count")
-ax4.set_ylabel("Movie Title")
-ax4.set_title("Top 10 Most Frequent Movies")
-ax4.invert_yaxis()
-st.pyplot(fig4)
+st.bar_chart(movie_df)
