@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 
+st.set_page_config(page_title="🎥 Movie Ratings Explorer", layout="wide")
+
 st.title("🎥 Movie Ratings Explorer")
 st.markdown("""
 Explore genre trends, top-rated movies, and what's hot right now — perfect for understanding what young movie lovers enjoy.
@@ -10,8 +12,7 @@ Explore genre trends, top-rated movies, and what's hot right now — perfect for
 # Load data
 @st.cache_data
 def load_data():
-    df = pd.read_csv("genres_expanded.csv")
-    return df
+    return pd.read_csv("genres_expanded.csv")
 
 data = load_data()
 
@@ -49,7 +50,7 @@ if selected_genres:
 else:
     st.warning("Please select at least one genre to see the trend.")
 
-# Section 2: Top Rated Genres (Bar chart only)
+# Section 2: Top Rated Genres (All Time)
 st.subheader("🎯 Top Rated Genres (All Time)")
 
 top_genres = (
@@ -61,16 +62,11 @@ top_genres = (
 
 st.bar_chart(top_genres)
 
-# Section 3: What's Trending This Year
-st.subheader("🔥 What’s Trending Now?")
+# Section 3: Top 10 Most Frequent Genres
+st.subheader("📊 Top 10 Most Frequent Genres")
 
-latest_year = data['year'].max()
-latest_data = data[data['year'] == latest_year]
+genre_counts = data['genres'].value_counts().head(10)
+st.bar_chart(genre_counts)
 
-trending = (
-    latest_data.groupby('genres')['rating']
-    .mean()
-    .sort_values(ascending=False)
-)
-
-st.bar_chart(trending.head(5))
+# Section 4: Top Rated Movies by Title
+st.subheader("🎬 Top Rat
