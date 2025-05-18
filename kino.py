@@ -69,4 +69,20 @@ genre_counts = data['genres'].value_counts().head(10)
 st.bar_chart(genre_counts)
 
 # Section 4: Top Rated Movies by Title
-st.subheader("🎬 Top Rat
+st.subheader("🎬 Top Rated Movies (All Time)")
+
+top_movies = (
+    data[['title', 'rating']].drop_duplicates()
+    .sort_values(by='rating', ascending=False).head(10)
+)
+
+st.dataframe(top_movies.set_index('title'))
+
+# Section 5: Top 10 Most Frequent Movie Titles
+st.subheader("📺 Top 10 Most Frequent Movies by Title")
+
+movie_counts = (
+    filtered['title'].value_counts().head(10)
+)
+
+st.bar_chart(movie_counts)
