@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import altair as alt  # Built-in in Streamlit
 
 st.title("🎥 Movie Ratings Explorer")
 st.markdown("""
@@ -63,25 +64,53 @@ st.bar_chart(top_genres)
 # Section 3: Top 10 Most Frequent Genres
 st.subheader("📊 Top 10 Most Frequent Genres")
 
-genre_counts = data['genres'].value_counts().head(10)
-genre_df = pd.DataFrame({'Genre': genre_counts.index, 'Count': genre_counts.values}).set_index('Genre')
+genre_counts = data['genres'].value_counts().head(10).reset_index()
+genre_counts.columns = ['genres', 'count']
 
-st.bar_chart(genre_df)
+chart_genre = alt.Chart(genre_counts).mark_bar(color='#7b2cbf').encode(
+    x='count',
+    y=alt.Y('genres', sort='-x'),
+).properties(
+    width=600,
+    height=300,
+    title='Top 10 Most Frequent Genres'
+)
+
+st.altair_chart(chart_genre)
 
 # Section 4: Top Rated Movies (All Time)
 st.subheader("🎬 Top Rated Movies (All Time)")
 
 top_movies = (
     data[['title', 'rating']].drop_duplicates()
-    .sort_values(by='rating', ascending=False).head(10)
-).set_index('title')
+    .sort_values(by='rating', ascending=False)
+    .head(10)
+)
 
-st.bar_chart(top_movies)
+chart_movies = alt.Chart(top_movies).mark_bar(color='#2ca02c').encode(
+    x='rating',
+    y=alt.Y('title', sort='-x'),
+).properties(
+    width=600,
+    height=300,
+    title='Top Rated Movies'
+)
+
+st.altair_chart(chart_movies)
 
 # Section 5: Top 10 Most Frequent Movie Titles
 st.subheader("📺 Top 10 Most Frequent Movies by Title")
 
-movie_counts = filtered['title'].value_counts().head(10)
-movie_df = pd.DataFrame({'Title': movie_counts.index, 'Count': movie_counts.values}).set_index('Title')
+movie_counts = filtered['title'].value_counts().head(10).reset_index()
+movie_counts.columns = ['title', 'count']
 
-st.bar_chart(movie_df)
+chart_frequent = alt.Chart(movie_counts).mark_bar(color='#ff7f0e').encode(
+    x='count',
+    y=alt.Y('title', sort='-x'),
+).properties(
+    width=600,
+    height=300,
+    title='Most Frequent Movie Titles'
+)
+
+st.altair_chart(chart_frequent)
